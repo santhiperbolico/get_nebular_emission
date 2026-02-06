@@ -857,7 +857,7 @@ def plot_uzn(root, endf, subvols=1, outpath=None, verbose=True):
        Path to files with calculated data (lines, etc)
     endf : string
        Ending of input files. 
-    subvols: integer
+    subvols: integer or list of integers
         Number of subvolumes to be considered
     outpath : string
         Path to output, default is output/ 
@@ -944,7 +944,11 @@ def plot_uzn(root, endf, subvols=1, outpath=None, verbose=True):
         tota, ina, inna = [np.zeros(1) for i in range(3)]
 
     # Read data in each subvolume
-    for ivol in range(subvols):
+    list_subvols = subvols
+    if isinstance(subvols, int):
+        list_subvols = list(range(subvols))
+
+    for ivol in list_subvols:
         filenom = os.path.join(root+'0',endf) #; print(filenom); exit()
         f = h5py.File(filenom, 'r'); header = f['header']
 
@@ -1315,7 +1319,7 @@ def plot_bpts(root, endf, subvols=1, outpath=None, verbose=True):
        Path to input files. 
     endf : string
        Ending of input files. 
-    subvols: integer
+    subvols: integer or list of integers
         Number of subvolumes to be considered
     outpath : string
         Path to output, default is output/ 
@@ -1381,7 +1385,11 @@ def plot_bpts(root, endf, subvols=1, outpath=None, verbose=True):
 
     # Read data in each subvolume and add data to plots
     seltot = 0
-    for ivol in range(subvols): ###here to go over subvols, not a range
+    list_subvols = subvols
+    if isinstance(subvols, int):
+        list_subvols = list(range(subvols))
+    
+    for ivol in list_subvols: ###here to go over subvols, not a range
         filenom = os.path.join(root+str(ivol),endf)
         f = h5py.File(filenom, 'r')
         
@@ -1581,7 +1589,7 @@ def plot_lfs(root, endf, subvols=1, outpath=None, verbose=True):
        Path to input files. 
     endf : string
        Ending of input files. 
-    subvols: integer
+    subvols: integer or list of integers
         Number of subvolumes to be considered
     outpath : string
         Path to output, default is output/ 
@@ -1646,7 +1654,11 @@ def plot_lfs(root, endf, subvols=1, outpath=None, verbose=True):
     lf_att = np.zeros((nlines, len(lhist)))
 
     # Read data from each subvolume
-    for ivol in range(subvols):
+    list_subvols = subvols
+    if isinstance(subvols, int):
+        list_subvols = list(range(subvols))
+    
+    for ivol in list_subvols:
         filenom = os.path.join(root+str(ivol),endf)
         f = h5py.File(filenom, 'r')
 
@@ -1808,7 +1820,7 @@ def plot_ncumu_flux(root, endf, subvols=1, outpath=None, verbose=True):
        Path to input files. 
     endf : string
        Ending of input files. 
-    subvols: integer
+    subvols: integer or list of integers
         Number of subvolumes to be considered
     outpath : string
         Path to output, default is output/ 
@@ -1876,7 +1888,11 @@ def plot_ncumu_flux(root, endf, subvols=1, outpath=None, verbose=True):
     ncum_att = np.zeros((nlines, len(fbins)))
 
     # Read data from each subvolume
-    for ivol in range(subvols):
+    list_subvols = subvols
+    if isinstance(subvols, int):
+        list_subvols = list(range(subvols))
+    
+    for ivol in list_subvols:
         filenom = os.path.join(root+str(ivol),endf)
         f = h5py.File(filenom, 'r')
 
@@ -2048,7 +2064,7 @@ def make_testplots(snap,ending,outpath=None,
        End name of input files
     outpath : string
        Path to input files
-    subvols: integer
+    subvols: integer or list of integers
         Number of subvolumes to be considered
     outpath : string
         Path to output, default is output/ 
