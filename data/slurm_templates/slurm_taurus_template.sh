@@ -9,6 +9,7 @@
 #SBATCH --output=__GNE_LOG_DIR__/__GNE_JOB_NAME__.out
 ##SBATCH --mem=600000
 #SBATCH --partition=all
+#SBATCH --exclude=epi
 #SBATCH --time=30-00:00:00
 #
 export OMP_NUM_THREADS=16
