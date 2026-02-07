@@ -55,17 +55,17 @@ for ivol in range(subvols):
         # Ensure template directory exists
         os.makedirs(cls.template_dir, exist_ok=True)
         
-        # Store original template if it exists (to restore later)
-        cls.taurus_template_path = os.path.join(cls.template_dir,
-                                                'slurm_taurus_template.sh')
-        cls.taurus_backup = None
-        if os.path.exists(cls.taurus_template_path):
-            with open(cls.taurus_template_path, 'r') as f:
-                cls.taurus_backup = f.read()
+        # Mock get_slurm_template
+        cls.patcher = patch('gne.gne_slurm.get_slurm_template')
+        cls.mock_get_slurm_template = cls.patcher.start()
         
-        # Create test template
-        with open(cls.taurus_template_path, 'w') as f:
-            f.write(cls.template_content)
+        def side_effect(hpc):
+            if hpc == 'taurus':
+                return cls.template_content
+            else:
+                sys.exit()
+                
+        cls.mock_get_slurm_template.side_effect = side_effect
         
         # Create test parameter file
         cls.param_file_path = os.path.join(cls.test_dir, 'run_gne_TestSim.py')
@@ -82,12 +82,8 @@ for ivol in range(subvols):
             except (OSError, PermissionError) as e:
                 print("Warning: Could not remove test directory {}: {}".format(cls.test_dir, e))
         
-        # Restore original template or remove test template
-        if cls.taurus_backup is not None:
-            with open(cls.taurus_template_path, 'w') as f:
-                f.write(cls.taurus_backup)
-        elif os.path.exists(cls.taurus_template_path):
-            os.remove(cls.taurus_template_path)
+        # Stop patcher
+        cls.patcher.stop()
 
     def test_extract_job_suffix_from_params(self):
         """Test extraction of job suffix from parameter file"""
