@@ -948,6 +948,8 @@ def plot_uzn(root, endf, subvols=1, outpath=None, verbose=True):
     if isinstance(subvols, int):
         list_subvols = list(range(subvols))
 
+    first_vol = True
+
     for ivol in list_subvols:
         filenom = os.path.join(root+'0',endf) #; print(filenom); exit()
         f = h5py.File(filenom, 'r'); header = f['header']
@@ -969,7 +971,7 @@ def plot_uzn(root, endf, subvols=1, outpath=None, verbose=True):
                 epsilon1 = f['agn_data/epsilon_NLR'][:]
         f.close()
 
-        if ivol == 0:
+        if first_vol:
             lusfr = lusfr1; lzsfr = lzsfr1
             lnsfr = lnsfr1; lms = lms1
             if AGN:
@@ -977,6 +979,7 @@ def plot_uzn(root, endf, subvols=1, outpath=None, verbose=True):
                 Lagn = Lagn1
                 if not epsilon_is_constant:
                     epsilon = epsilon1    
+            first_vol = False
         else:
             lusfr = np.append(lusfr,lusfr1,axis=0)
             lzsfr = np.append(lzsfr,lzsfr1,axis=0)
@@ -1388,6 +1391,8 @@ def plot_bpts(root, endf, subvols=1, outpath=None, verbose=True):
     list_subvols = subvols
     if isinstance(subvols, int):
         list_subvols = list(range(subvols))
+
+    chatot = None
     
     for ivol in list_subvols: ###here to go over subvols, not a range
         filenom = os.path.join(root+str(ivol),endf)
@@ -1525,7 +1530,7 @@ def plot_bpts(root, endf, subvols=1, outpath=None, verbose=True):
         axs.scatter(xx,yy, c=cha,s=50, marker='o', cmap=cmap)
 
         # Join all data for the colourbar
-        if ivol == 0:
+        if chatot is None:
             chatot = cha
         else:
             chatot = np.append(chatot,cha)
@@ -1795,7 +1800,7 @@ def plot_lfs(root, endf, subvols=1, outpath=None, verbose=True):
         ax.set_ylim([ymin, ymax])
         ax.minorticks_on()
         ax.set_xlabel(xtit); ax.set_ylabel(ytit)
-        if (iline==0):
+        if (iline==0) and len(ind[0]) > 0:
             ax.legend(loc='best',frameon=False)
     
     plt.tight_layout()
@@ -2016,7 +2021,8 @@ def plot_ncumu_flux(root, endf, subvols=1, outpath=None, verbose=True):
                     ax.plot(x, y,'--',color=color,label=ll)
             
         # Legend
-        ax.legend(loc='best',frameon=False)
+        if len(ind[0]) > 0:
+            ax.legend(loc='best',frameon=False)
     plt.tight_layout()
     
     # Output
