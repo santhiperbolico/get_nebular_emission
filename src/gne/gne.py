@@ -17,7 +17,7 @@ from gne.gne_plots import make_testplots
 
 def gne(infile,redshift,snap,h0,omega0,omegab,lambda0,vol,mp,
         inputformat='hdf5',outpath=None,out_ending=None,
-        units_h0=False,units_Gyr=False,units_L40h2=False,
+        units_h0=False,units_Gyr=False,units_L40h2=0,
         model_nH_sfr='kashino19',model_U_sfr='kashino19',
         photmod_sfr='gutkin16',nH_sfr=c.nH_sfr_cm3,
         q0=c.q0_orsi, z0=c.Z0_orsi, gamma=c.gamma_orsi,
@@ -136,8 +136,10 @@ def gne(infile,redshift,snap,h0,omega0,omegab,lambda0,vol,mp,
         True if input units with h
     units_Gyr: boolean
         True if input units with */Gyr
-    units_L40h2: boolean
-        True if input units with 1e40erg/s
+    units_L40h2: integer
+        0: input units [L]=erg/s  (default);
+        1: input units [L]=1e40 h^-2 erg/s
+        2: input units [L]=1e40 erg/s
     testing : boolean
         If True only run over few entries for testing purposes
     verbose : boolean

@@ -54,9 +54,11 @@ units_h0=True
 # units_Gyr=False if input units [SFR,Mdot]=[Mass]/yr (default)
 # units_Gyr=True  if input units [SFR,Mdot]=[Mass]/Gyr 
 units_Gyr=True 
-# units_L40h2=False if input units [L]=erg/s  (default)
-# units_L40h2=True  if input units [L]=1e40 h^-2 erg/s
-units_L40h2=True
+# Type of input units for luminosity, per component:
+# 0: input units [L]=erg/s  (default);
+# 1: input units [L]=1e40 h^-2 erg/s
+# 2: input units [L]=1e40 erg/s
+units_L40h2=1
 
 ####################################################
 ############  Emission from SF regions #############
