@@ -80,24 +80,24 @@ class TestGetLagn(unittest.TestCase):
         lagn_val = np.array([1.0, 2.0, 3.0])
         mock_read_data.return_value = (lagn_val,)
 
-        # Test case 1: units_L40h2=0 (default)
-        result = agn.get_Lagn(infile='dummy.hdf5', cut=None, Lagn_inputs='Lagn', units_L40h2=0)
+        # Test case 1: units_L=0 (default)
+        result = agn.get_Lagn(infile='dummy.hdf5', cut=None, Lagn_inputs='Lagn', units_L=0)
         assert_allclose(result, lagn_val)
 
-        # Test case 2: units_L40h2=1
+        # Test case 2: units_L=1
         h0 = 0.7
         expected_result = lagn_val * 1e40 / (h0 * h0)
-        result = agn.get_Lagn(infile='dummy.hdf5', cut=None, Lagn_inputs='Lagn', units_L40h2=1, h0=h0)
+        result = agn.get_Lagn(infile='dummy.hdf5', cut=None, Lagn_inputs='Lagn', units_L=1, h0=h0)
         assert_allclose(result, expected_result)
 
-        # Test case 3: units_L40h2=2
+        # Test case 3: units_L=2
         expected_result = lagn_val * 1e40
-        result = agn.get_Lagn(infile='dummy.hdf5', cut=None, Lagn_inputs='Lagn', units_L40h2=2)
+        result = agn.get_Lagn(infile='dummy.hdf5', cut=None, Lagn_inputs='Lagn', units_L=2)
         assert_allclose(result, expected_result)
 
-        # Test case 4: units_L40h2=3 (ValueError)
-        with self.assertRaisesRegex(ValueError, 'units_L40h2 must be 0, 1 or 2'):
-            agn.get_Lagn(infile='dummy.hdf5', cut=None, Lagn_inputs='Lagn', units_L40h2=3)
+        # Test case 4: units_L=3 (ValueError)
+        with self.assertRaisesRegex(ValueError, 'units_L must be 0, 1 or 2'):
+            agn.get_Lagn(infile='dummy.hdf5', cut=None, Lagn_inputs='Lagn', units_L=3)
 
 
 if __name__ == '__main__':

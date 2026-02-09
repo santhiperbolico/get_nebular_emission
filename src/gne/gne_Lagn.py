@@ -207,7 +207,7 @@ def Rsch(Mbh):
 
 
 def get_Lagn(infile,cut,inputformat='hdf5',params='Lagn',Lagn_inputs='Lagn',
-             h0=None,units_h0=False,units_Gyr=False,units_L40h2=0,
+             h0=None,units_h0=False,units_Gyr=False,units_L=0,
              kagn=c.kagn,kagn_exp=c.kagn_exp,testing=False,verbose=True):
     '''
     Calculate or get the bolometric luminosity of BHs (erg/s) 
@@ -228,7 +228,7 @@ def get_Lagn(infile,cut,inputformat='hdf5',params='Lagn',Lagn_inputs='Lagn',
         True if input units with h
     units_Gyr: boolean
         True if input units with */Gyr
-    units_L40h2: integer
+    units_L: integer
         0: input units [L]=erg/s  (default);
         1: input units [L]=1e40 h^-2 erg/s
         2: input units [L]=1e40 erg/s
@@ -253,14 +253,14 @@ def get_Lagn(infile,cut,inputformat='hdf5',params='Lagn',Lagn_inputs='Lagn',
     
     if Lagn_inputs=='Lagn':
         Lagn = vals[0]
-        if units_L40h2==1:
+        if units_L==1:
             cfac = 1e40/(h0*h0)
             Lagn = Lagn*cfac
-        elif units_L40h2==2:
+        elif units_L==2:
             cfac = 1e40
             Lagn = Lagn*cfac
-        elif units_L40h2!=0:
-            raise ValueError('units_L40h2 must be 0, 1 or 2')
+        elif units_L!=0:
+            raise ValueError('units_L must be 0, 1 or 2')
         return Lagn # erg/s
     
     elif Lagn_inputs=='Mdot_hh':
