@@ -171,6 +171,10 @@ def get_outnom(filenom,dirf=None,nomf=None,verbose=False):
     create_dir(root)
 
     outfile = os.path.join(root, nom+'.hdf5')
+    if outfile == filenom:
+        outfile = os.path.join(root, nom+'_output.hdf5')
+        print(f'WARNING: outfile is the same as filenom {filenom}. Renaming outfile to {outfile}')
+
     if verbose:
         print(f'* Output: {outfile}')
     return outfile
