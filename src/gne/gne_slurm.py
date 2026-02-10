@@ -91,7 +91,7 @@ def generate_job_name(param_file, simpath, snap, subvols,
         Path to the catalogues
     snap : int
         Snapshot number
-    subvols : list of integers
+    subvols : integer or list of integers
         List of subvolumes
     job_suffix : string or None
         User-defined suffix. If None, derived from cutcols/limits in param_file
@@ -106,6 +106,17 @@ def generate_job_name(param_file, simpath, snap, subvols,
     
     # Create subvols representation
     subvols_str = str(subvols)
+    if isinstance(subvols, list):
+        subvols_str = str(subvols[0])
+        if len(subvols) > 1:
+            subvols_sort = subvols.copy()
+            subvols_sort.sort()
+            item_0 = subvols_sort[0]
+            item_n = subvols_sort[-1]
+            if subvols_sort == list(range(item_0, item_n + 1)):
+                subvols_str = f'{item_0}-{item_n}'
+            else:
+                subvols_str = "_".join(map(str, subvols))        
     
     # Get suffix from cutcols if not provided
     if job_suffix is None:
@@ -194,8 +205,8 @@ def create_slurm_script(hpc, param_file, simpath, snap, subvols,
         Simulation snapshot number 
     subvols : list of integers
         List of subvolumes
-    outdir : string
-        Name of output directory, if different from output/
+    logdir : string
+        Name of log directory
     verbose : bool
         Verbose output flag
     job_suffix : string or None
